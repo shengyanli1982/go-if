@@ -153,6 +153,66 @@ deadline := goif.If(isUrgent,
 )
 ```
 
+# 性能基准测试
+
+我们对 `go-if` 和传统 if-else 语句在不同数据类型下进行了全面的性能对比测试：
+
+```bash
+$ go test -bench=. -benchmem
+goos: windows
+goarch: amd64
+pkg: github.com/shengyanli1982/go-if
+cpu: 12th Gen Intel(R) Core(TM) i5-12400F
+BenchmarkString/Generic_If-12                   1000000000               0.1293 ns/op          0 B/op          0 allocs/op
+BenchmarkString/Traditional_IfElse-12           1000000000               0.1297 ns/op          0 B/op          0 allocs/op
+BenchmarkInteger/Generic_If-12                  1000000000               0.1299 ns/op          0 B/op          0 allocs/op
+BenchmarkInteger/Traditional_IfElse-12          1000000000               0.1310 ns/op          0 B/op          0 allocs/op
+BenchmarkStruct/Generic_If-12                   1000000000               0.1285 ns/op          0 B/op          0 allocs/op
+BenchmarkStruct/Traditional_IfElse-12           1000000000               0.1306 ns/op          0 B/op          0 allocs/op
+BenchmarkSlice/Generic_If-12                    1000000000               0.1284 ns/op          0 B/op          0 allocs/op
+BenchmarkSlice/Traditional_IfElse-12            1000000000               0.1281 ns/op          0 B/op          0 allocs/op
+```
+
+## 运行基准测试
+
+要自行运行基准测试，请执行：
+
+```bash
+go test -bench=. -benchmem
+```
+
+针对特定类型的基准测试：
+
+```bash
+# 仅测试字符串操作
+go test -bench=BenchmarkString -benchmem
+
+# 仅测试整数操作
+go test -bench=BenchmarkInteger -benchmem
+
+# 仅测试结构体操作
+go test -bench=BenchmarkStruct -benchmem
+
+# 仅测试切片操作
+go test -bench=BenchmarkSlice -benchmem
+```
+
+## 基准测试用例
+
+基准测试涵盖了四个主要类别：
+
+1. **字符串操作**：比较字符串条件赋值的性能
+2. **整数操作**：测试数值选择的性能
+3. **结构体操作**：评估复杂结构体类型处理的性能
+4. **切片操作**：测量切片赋值的性能
+
+每个基准测试都比较了：
+
+-   `Generic_If`：使用我们的泛型 `If` 函数
+-   `Traditional_IfElse`：使用传统的 if-else 语句
+
+这些测试结果可以帮助你在项目中更好地决定何时使用 `go-if`。
+
 # 最佳实践
 
 ## 1. 保持简单
