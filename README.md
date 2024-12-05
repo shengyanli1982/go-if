@@ -153,6 +153,66 @@ deadline := goif.If(isUrgent,
 )
 ```
 
+# Performance Benchmarks
+
+We've conducted comprehensive benchmarks comparing `go-if` with traditional if-else statements across different data types:
+
+```bash
+$ go test -bench=. -benchmem
+goos: windows
+goarch: amd64
+pkg: github.com/shengyanli1982/go-if
+cpu: 12th Gen Intel(R) Core(TM) i5-12400F
+BenchmarkString/Generic_If-12                   1000000000               0.1293 ns/op          0 B/op          0 allocs/op
+BenchmarkString/Traditional_IfElse-12           1000000000               0.1297 ns/op          0 B/op          0 allocs/op
+BenchmarkInteger/Generic_If-12                  1000000000               0.1299 ns/op          0 B/op          0 allocs/op
+BenchmarkInteger/Traditional_IfElse-12          1000000000               0.1310 ns/op          0 B/op          0 allocs/op
+BenchmarkStruct/Generic_If-12                   1000000000               0.1285 ns/op          0 B/op          0 allocs/op
+BenchmarkStruct/Traditional_IfElse-12           1000000000               0.1306 ns/op          0 B/op          0 allocs/op
+BenchmarkSlice/Generic_If-12                    1000000000               0.1284 ns/op          0 B/op          0 allocs/op
+BenchmarkSlice/Traditional_IfElse-12            1000000000               0.1281 ns/op          0 B/op          0 allocs/op
+```
+
+## Running Benchmarks
+
+To run the benchmarks yourself:
+
+```bash
+go test -bench=. -benchmem
+```
+
+For specific type benchmarks:
+
+```bash
+# String operations only
+go test -bench=BenchmarkString -benchmem
+
+# Integer operations only
+go test -bench=BenchmarkInteger -benchmem
+
+# Struct operations only
+go test -bench=BenchmarkStruct -benchmem
+
+# Slice operations only
+go test -bench=BenchmarkSlice -benchmem
+```
+
+## Benchmark Cases
+
+The benchmarks cover four main categories:
+
+1. **String Operations**: Comparing string conditional assignments
+2. **Integer Operations**: Testing numeric value selections
+3. **Struct Operations**: Evaluating complex struct type handling
+4. **Slice Operations**: Measuring performance with slice assignments
+
+Each benchmark compares:
+
+-   `Generic_If`: Using our generic `If` function
+-   `Traditional_IfElse`: Using traditional if-else statements
+
+This helps you make informed decisions about when to use `go-if` in your codebase.
+
 # Best Practices
 
 ## 1. Keep It Simple

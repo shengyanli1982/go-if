@@ -186,3 +186,94 @@ func TestIf(t *testing.T) {
 		assert.Equal(t, nilInterface, If(true, nilInterface, i1))
 	})
 }
+
+func BenchmarkString(b *testing.B) {
+	b.Run("Generic_If         ", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = If(i%2 == 0, "true", "false")
+		}
+	})
+
+	b.Run("Traditional_IfElse ", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			var result string
+			if i%2 == 0 {
+				result = "true"
+			} else {
+				result = "false"
+			}
+			_ = result
+		}
+	})
+}
+
+func BenchmarkInteger(b *testing.B) {
+	b.Run("Generic_If         ", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = If(i%2 == 0, 1, 0)
+		}
+	})
+
+	b.Run("Traditional_IfElse ", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			var result int
+			if i%2 == 0 {
+				result = 1
+			} else {
+				result = 0
+			}
+			_ = result
+		}
+	})
+}
+
+func BenchmarkStruct(b *testing.B) {
+	type complexStruct struct {
+		value string
+		num   int
+		valid bool
+	}
+	s1 := complexStruct{value: "struct1", num: 1, valid: true}
+	s2 := complexStruct{value: "struct2", num: 2, valid: false}
+
+	b.Run("Generic_If         ", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = If(i%2 == 0, s1, s2)
+		}
+	})
+
+	b.Run("Traditional_IfElse ", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			var result complexStruct
+			if i%2 == 0 {
+				result = s1
+			} else {
+				result = s2
+			}
+			_ = result
+		}
+	})
+}
+
+func BenchmarkSlice(b *testing.B) {
+	slice1 := []int{1, 2, 3}
+	slice2 := []int{4, 5, 6}
+
+	b.Run("Generic_If         ", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			_ = If(i%2 == 0, slice1, slice2)
+		}
+	})
+
+	b.Run("Traditional_IfElse ", func(b *testing.B) {
+		for i := 0; i < b.N; i++ {
+			var result []int
+			if i%2 == 0 {
+				result = slice1
+			} else {
+				result = slice2
+			}
+			_ = result
+		}
+	})
+}
